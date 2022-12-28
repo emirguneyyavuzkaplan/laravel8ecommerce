@@ -3,11 +3,19 @@
 namespace App\Http\Livewire;
 
 use App\Models\Product;
+use Gloudemans\Shoppingcart\Facades\Cart;
 use Livewire\Component;
 use Livewire\WithPagination;
 
+
 class ShopComponent extends Component
 {
+    public function store($product_id,$product_name,$product_price){
+
+        Cart::add($product_id,$product_name,1,$product_price)->associate('App\Models\Product');
+        session()->flash('success_message','Item Added in Cart');
+        return redirect()->route('product.cart');
+    }
 
     use WithPagination;
 
@@ -17,3 +25,4 @@ class ShopComponent extends Component
         return view('livewire.shop-component',['products'=>$products])->layout("Layouts.base");
     }
 }
+
